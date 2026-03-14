@@ -1,14 +1,16 @@
 import { useCallback } from "react";
 import { Alert, FlatList, SafeAreaView, StyleSheet, View } from "react-native";
-import { useRouter, useFocusEffect } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import EmptyState from "../src/components/EmptyState";
 import FloatingButton from "../src/components/FloatingButton";
 import NoteCard from "../src/components/NoteCard";
 import SearchBar from "../src/components/SearchBar";
+import { colors } from "../src/theme/colors";
 import { useNotesViewModel } from "../src/viewmodels/useNotesViewModel";
 
 export default function NotesScreen() {
   const router = useRouter();
+
   const { notes, search, setSearch, loadNotes, deleteNote, togglePin } =
     useNotesViewModel();
 
@@ -23,7 +25,10 @@ export default function NotesScreen() {
       "Eliminar nota",
       "¿Seguro que deseas eliminar esta nota?",
       [
-        { text: "Cancelar", style: "cancel" },
+        {
+          text: "Cancelar",
+          style: "cancel",
+        },
         {
           text: "Eliminar",
           style: "destructive",
@@ -41,6 +46,7 @@ export default function NotesScreen() {
         <FlatList
           data={notes}
           keyExtractor={(item) => String(item.id)}
+          showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
             <NoteCard
               note={item}
@@ -50,7 +56,10 @@ export default function NotesScreen() {
             />
           )}
           ListEmptyComponent={<EmptyState />}
-          contentContainerStyle={notes.length === 0 ? { flex: 1 } : undefined}
+          contentContainerStyle={[
+            styles.listContent,
+            notes.length === 0 && styles.emptyListContent,
+          ]}
         />
 
         <FloatingButton onPress={() => router.push("/note/new")} />
@@ -62,10 +71,17 @@ export default function NotesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F1F5F9",
+    backgroundColor: colors.background,
   },
   content: {
     flex: 1,
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingTop: 12,
+  },
+  listContent: {
+    paddingBottom: 110,
+  },
+  emptyListContent: {
+    flexGrow: 1,
   },
 });

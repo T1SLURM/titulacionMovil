@@ -1,10 +1,21 @@
-import { Alert, SafeAreaView, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  SafeAreaView,
+  StyleSheet,
+  Switch,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
+import { colors } from "../../src/theme/colors";
 import { useNoteEditorViewModel } from "../../src/viewmodels/useNoteEditorViewModel";
 
 export default function EditNoteScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
+
   const id = Number(params.id);
 
   const {
@@ -20,6 +31,7 @@ export default function EditNoteScreen() {
 
   const handleSave = () => {
     const ok = save();
+
     if (!ok) {
       Alert.alert("Validación", "El título no puede estar vacío");
       return;
@@ -37,6 +49,7 @@ export default function EditNoteScreen() {
           value={title}
           onChangeText={setTitle}
           placeholder="Editar título"
+          placeholderTextColor={colors.textMuted}
         />
 
         <Text style={styles.label}>Contenido</Text>
@@ -45,13 +58,19 @@ export default function EditNoteScreen() {
           value={content}
           onChangeText={setContent}
           placeholder="Editar contenido"
+          placeholderTextColor={colors.textMuted}
           multiline
           textAlignVertical="top"
         />
 
-        <View style={styles.pinRow}>
-          <Text style={styles.label}>Fijar nota</Text>
-          <Switch value={isPinned === 1} onValueChange={(v) => setIsPinned(v ? 1 : 0)} />
+        <View style={styles.pinCard}>
+          <Text style={styles.pinText}>Fijar nota</Text>
+          <Switch
+            value={isPinned === 1}
+            onValueChange={(value) => setIsPinned(value ? 1 : 0)}
+            trackColor={{ false: "#CBD5E1", true: "#93C5FD" }}
+            thumbColor={isPinned === 1 ? colors.primary : "#FFFFFF"}
+          />
         </View>
 
         {!!error && <Text style={styles.error}>{error}</Text>}
@@ -65,28 +84,70 @@ export default function EditNoteScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#F8FAFC" },
-  content: { flex: 1, padding: 16 },
-  label: { fontSize: 16, fontWeight: "600", marginBottom: 8 },
-  input: {
-    backgroundColor: "#fff",
-    borderRadius: 12,
-    padding: 14,
-    marginBottom: 16,
+  container: {
+    flex: 1,
+    backgroundColor: colors.background,
   },
-  textArea: { minHeight: 180 },
-  pinRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+  content: {
+    flex: 1,
+    padding: 16,
+  },
+  label: {
+    marginBottom: 8,
+    fontSize: 15,
+    fontWeight: "700",
+    color: colors.text,
+  },
+  input: {
+    marginBottom: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.surface,
+    fontSize: 15,
+    color: colors.text,
+  },
+  textArea: {
+    minHeight: 180,
+  },
+  pinCard: {
     marginBottom: 18,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.surface,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  pinText: {
+    fontSize: 15,
+    fontWeight: "600",
+    color: colors.text,
   },
   button: {
-    backgroundColor: "#2563EB",
-    paddingVertical: 14,
-    borderRadius: 12,
+    paddingVertical: 16,
+    borderRadius: 16,
     alignItems: "center",
+    backgroundColor: colors.primary,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 4,
   },
-  buttonText: { color: "#fff", fontWeight: "700", fontSize: 16 },
-  error: { color: "#DC2626", marginBottom: 12 },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#FFFFFF",
+  },
+  error: {
+    marginBottom: 12,
+    color: colors.danger,
+    fontWeight: "600",
+  },
 });

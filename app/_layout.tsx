@@ -8,10 +8,40 @@ export default function RootLayout() {
   }, []);
 
   return (
-    <Stack screenOptions={{ headerTitleAlign: "center" }}>
-      <Stack.Screen name="index" options={{ title: "Mis notas" }} />
-      <Stack.Screen name="note/new" options={{ title: "Nueva nota" }} />
-      <Stack.Screen name="note/[id]" options={{ title: "Editar nota" }} />
+    <Stack
+      screenOptions={{
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: "#F8FAFC",
+        },
+        headerShadowVisible: false,
+        headerTintColor: "#0F172A",
+        headerTitleStyle: {
+          fontWeight: "700",
+        },
+        contentStyle: {
+          backgroundColor: "#F8FAFC",
+        },
+      }}
+    >
+      <Stack.Screen
+        name="index"
+        options={{
+          title: "Mis Notas",
+        }}
+      />
+      <Stack.Screen
+        name="note/new"
+        options={{
+          title: "Nueva nota",
+        }}
+      />
+      <Stack.Screen
+        name="note/[id]"
+        options={{
+          title: "Editar nota",
+        }}
+      />
     </Stack>
   );
 }

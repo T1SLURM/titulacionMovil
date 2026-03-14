@@ -1,4 +1,5 @@
-import { StyleSheet, TextInput } from "react-native";
+import { StyleSheet, TextInput, View } from "react-native";
+import { colors } from "../theme/colors";
 
 type Props = {
   value: string;
@@ -7,21 +8,30 @@ type Props = {
 
 export default function SearchBar({ value, onChangeText }: Props) {
   return (
-    <TextInput
-      placeholder="Buscar notas..."
-      value={value}
-      onChangeText={onChangeText}
-      style={styles.input}
-    />
+    <View style={styles.wrapper}>
+      <TextInput
+        style={styles.input}
+        value={value}
+        onChangeText={onChangeText}
+        placeholder="Buscar notas..."
+        placeholderTextColor={colors.textMuted}
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  input: {
-    backgroundColor: "#fff",
-    borderRadius: 12,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
+  wrapper: {
     marginBottom: 16,
+  },
+  input: {
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.surface,
+    fontSize: 15,
+    color: colors.text,
   },
 });
